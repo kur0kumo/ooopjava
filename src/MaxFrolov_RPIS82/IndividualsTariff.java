@@ -1,10 +1,11 @@
 package MaxFrolov_RPIS82;
 import java.util.Arrays;
 
-public class IndividualsTariff {
+public class IndividualsTariff implements Tariff {
     private Service[] services;
     private int capacity;
     private int size;
+
 
     public IndividualsTariff() {
         this.services = new Service[8];
@@ -72,6 +73,24 @@ public class IndividualsTariff {
         return null;
     }
 
+    @Override
+    public boolean isIncluded(String name) {
+        return get(name)==null;
+    }
+
+    @Override
+    public Service set(int pos, Service service) {
+        if(pos<services.length) {
+            Service s = services[pos];
+            services[pos] = service;
+            return s;
+        }else
+        {
+            add(service,pos);
+            return null;
+        }
+    }
+
     public boolean exists(String serviceName) {
         for (int i = 0; i < this.services.length; ++i) {
             if (this.services[i].getName().equalsIgnoreCase(serviceName)) {
@@ -109,6 +128,8 @@ public class IndividualsTariff {
         return null;
     }
 
+
+
     public int getSize() {
         return this.size;
     }
@@ -138,6 +159,8 @@ public class IndividualsTariff {
         return out;
     }
 
+
+
     public int getCost() {
         int totalCost = 50;
 
@@ -147,4 +170,55 @@ public class IndividualsTariff {
 
         return totalCost;
     }
+
+    @Override
+    public Service delete(Service service) {
+        int index=firstIndex(service);
+        if(index>0)
+            return delete(index);
+        else return null;
+    }
+
+    @Override
+    public int firstIndex(Service service) {
+        for (int i=0;i<getSize();i++)
+            if(services[i].equals(service))return i;
+        return -1;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder=new StringBuilder();
+        stringBuilder.append("services:\n");
+        for (Service serv:services) {
+            stringBuilder.append(serv.toString());
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash=31;
+        for (Service serv:services) hash*=serv.hashCode();
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean res=false;
+        if(obj.getClass().equals(IndividualsTariff.class))
+        {
+            IndividualsTariff tariff= (IndividualsTariff) obj;
+            res=(tariff.getSize()==getSize());
+            Service[] services=tariff.getServices();
+            for (int i=0;i<getSize();i++) {
+                res= services[i].equals(this.services[i]);
+                if(!res)return res;
+            }
+            return res;
+        }
+        return false;
+    }
 }
+

@@ -36,4 +36,21 @@ public class IndividualAccount extends AbstractAccount{
     public int getId() {
         return this.id;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Individual account:\nholder:%s\n%s",holder,super.toString());
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode()*97*holder.hashCode();
+    }
+
+    public boolean equals(Object obj) {
+
+        return obj.getClass().equals(IndividualAccount.class) &&
+                super.equals(obj) &&
+                holder.equals(((IndividualAccount) obj).holder);
+    }
 }

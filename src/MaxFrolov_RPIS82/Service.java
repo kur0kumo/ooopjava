@@ -29,4 +29,26 @@ public final class Service {
     public ServiceTypes getServiceType() {
         return serviceType;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%-40s\\\\%dp.",name,cost);
+    }
+
+    @Override
+    public int hashCode() {
+        return cost*name.hashCode()*serviceType.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Service service= (Service) obj;
+        return cost==service.cost&&service.name.equals(name)
+                &&service.serviceType.equals(serviceType);
+    }
+
+    @Override
+    protected Service clone() throws CloneNotSupportedException {
+        return (Service) super.clone();
+    }
 }

@@ -146,4 +146,56 @@ public class EntityTariff implements Tariff {
     public int getCost() {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder=new StringBuilder();
+        stringBuilder.append("services:\n");
+        for (Service serv:getServices()) {
+            stringBuilder.append(serv.toString());
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash=71;
+        for (Service serv:getServices()) hash*=serv.hashCode();
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean res=false;
+        if(obj.getClass().equals(IndividualsTariff.class))
+        {
+            IndividualsTariff tariff= (IndividualsTariff) obj;
+            res=(tariff.getSize()==getSize());
+            Service[] services=tariff.getServices();
+            Service[] services1=getServices();
+            for (int i=0;i<getSize();i++) {
+                res= services[i].equals(services1[i]);
+                if(!res)return res;
+            }
+            return res;
+        }
+        return false;
+    }
+
+    @Override
+    public Service delete(Service service) {
+        int index=firstIndex(service);
+        if(index>0)
+            return delete(index);
+        else return null;
+    }
+
+    @Override
+    public int firstIndex(Service service) {
+        Service[] services=getServices();
+        for (int i=0;i<getSize();i++)
+            if(services[i].equals(service))return i;
+        return -1;
+    }
 }

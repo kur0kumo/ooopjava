@@ -16,4 +16,24 @@ public class Person {
     public String getfName() {
         return this.fName;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s",fName,sName);
+    }
+
+    @Override
+    public int hashCode() {
+        return sName.hashCode()*fName.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj.getClass().equals(Person.class))
+        {
+            Person person= (Person) obj;
+            return sName.equals(person.sName)&&fName.equals(person.fName);
+        }else return false;
+    }
+
 }

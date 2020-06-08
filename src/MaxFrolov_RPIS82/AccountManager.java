@@ -109,4 +109,12 @@ public class AccountManager {
         return (Service[]) s.toArray();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder str= new StringBuilder();
+        for (IndividualAccount acc:accounts) {
+            str.append(acc.toString());
+        }
+        return str.toString();
+    }
 }

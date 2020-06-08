@@ -13,4 +13,6 @@ public interface Tariff {
     public Service[] getServices();
     public Service[] getSortedServices();
     public int getCost();
+    public Service delete(Service service);
+    public int firstIndex(Service service);
 }
