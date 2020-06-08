@@ -5,6 +5,8 @@ public class Person {
     private String fName;
 
     public Person(String sName, String fName) {
+        if(sName==null||fName==null)
+            throw new NullPointerException();
         this.sName = sName;
         this.fName = fName;
     }

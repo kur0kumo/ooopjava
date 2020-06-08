@@ -1,11 +1,11 @@
 package MaxFrolov_RPIS82;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class IndividualsTariff implements Tariff {
     private Service[] services;
     private int capacity;
     private int size;
-
 
     public IndividualsTariff() {
         this.services = new Service[8];
@@ -13,11 +13,14 @@ public class IndividualsTariff implements Tariff {
     }
 
     public IndividualsTariff(int initialCapacity) {
+
         this.services = new Service[initialCapacity];
         this.capacity = initialCapacity;
     }
 
     public IndividualsTariff(Service[] services) {
+        if(services==null)
+            throw new NullPointerException();
         Service[] newServices = new Service[services.length];
         System.arraycopy(services, 0, newServices, 0, services.length);
         this.capacity = this.size = services.length;
@@ -25,6 +28,8 @@ public class IndividualsTariff implements Tariff {
     }
 
     public boolean add(Service service) {
+        if(service==null)
+            throw new NullPointerException();
         if (this.size == this.capacity) {
             DoubleCapacity();
         }
@@ -48,8 +53,10 @@ public class IndividualsTariff implements Tariff {
     }
 
     public boolean add(Service service, int position) {
+        if(service==null)
+            throw new NullPointerException();
         if (position < 0 | position > this.capacity) {
-            return false;
+            throw new IndexOutOfBoundsException();
         } else if (this.services[position] == null) {
             this.services[position] = service;
             ++this.size;
@@ -60,10 +67,14 @@ public class IndividualsTariff implements Tariff {
     }
 
     public Service get(int position) {
+        if(position<0||position>=getSize())
+            throw new IndexOutOfBoundsException();
         return this.services[position];
     }
 
     public Service get(String name) {
+        if(name==null)
+            throw new NullPointerException();
         for (int i = 0; i < this.services.length; ++i) {
             if (this.services[i].getName().equalsIgnoreCase(name)) {
                 return this.services[i];
@@ -75,11 +86,17 @@ public class IndividualsTariff implements Tariff {
 
     @Override
     public boolean isIncluded(String name) {
+        if(name==null)
+            throw new NullPointerException();
         return get(name)==null;
     }
 
     @Override
     public Service set(int pos, Service service) {
+        if(service==null)
+            throw new NullPointerException();
+        if(pos<0||pos>=getSize())
+            throw new IndexOutOfBoundsException();
         if(pos<services.length) {
             Service s = services[pos];
             services[pos] = service;
@@ -92,6 +109,8 @@ public class IndividualsTariff implements Tariff {
     }
 
     public boolean exists(String serviceName) {
+        if(serviceName==null)
+            throw new NullPointerException();
         for (int i = 0; i < this.services.length; ++i) {
             if (this.services[i].getName().equalsIgnoreCase(serviceName)) {
                 return true;
@@ -102,12 +121,18 @@ public class IndividualsTariff implements Tariff {
     }
 
     public Service rewrite(Service newService, int position) {
+        if(newService==null)
+            throw new NullPointerException();
+        if(position<0||position>=getSize())
+            throw new IndexOutOfBoundsException();
         Service oldService = this.services[position];
         this.services[position] = newService;
         return oldService;
     }
 
     public Service delete(int position) {
+        if(position<0||position>=getSize())
+            throw new IndexOutOfBoundsException();
         Service deleted = this.services[position];
         System.arraycopy(this.services, position + 1, this.services, position, this.size - position);
         this.services[this.size--] = null;
@@ -115,6 +140,8 @@ public class IndividualsTariff implements Tariff {
     }
 
     public Service delete(String name) {
+        if(name==null)
+            throw new NullPointerException();
         for (int i = 0; i < this.services.length; ++i) {
             if (this.services[i].getName().equalsIgnoreCase(name)) {
                 Service deleted = this.services[i];
@@ -162,7 +189,7 @@ public class IndividualsTariff implements Tariff {
 
 
     public int getCost() {
-        int totalCost = 50;
+        int totalCost = 0;
 
         for (int i = 0; i < this.size; ++i) {
             totalCost += this.services[i].getCost();
@@ -173,14 +200,18 @@ public class IndividualsTariff implements Tariff {
 
     @Override
     public Service delete(Service service) {
+        if(service==null)
+            throw new NullPointerException();
         int index=firstIndex(service);
         if(index>0)
             return delete(index);
-        else return null;
+        else throw new NoSuchElementException();
     }
 
     @Override
     public int firstIndex(Service service) {
+        if(service==null)
+            throw new NullPointerException();
         for (int i=0;i<getSize();i++)
             if(services[i].equals(service))return i;
         return -1;

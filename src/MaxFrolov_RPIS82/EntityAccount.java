@@ -10,6 +10,11 @@ public class EntityAccount extends AbstractAccount implements Account{
         return number;
     }
 
+    public void setNumber(long number) {
+        this.number = number;
+        super.setNumber(number);
+    }
+
     @Override
     public EntityTariff getTariff(int pos) {
         return tariff;
@@ -18,6 +23,7 @@ public class EntityAccount extends AbstractAccount implements Account{
     @Override
     public void setTariff(EntityTariff tariff) {
         this.tariff=tariff;
+        super.setTariff(tariff);
     }
 
     public String getName() {

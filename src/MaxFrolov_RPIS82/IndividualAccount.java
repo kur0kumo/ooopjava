@@ -1,20 +1,30 @@
 package MaxFrolov_RPIS82;
 
+import java.time.LocalDate;
+
 public class IndividualAccount extends AbstractAccount{
     private int id;
     private Person holder;
     private IndividualsTariff tariff;
 
     public IndividualAccount(int id, Person holder) {
+        if(holder==null)
+            throw new NullPointerException();
         this.id = id;
         this.holder = holder;
         this.tariff = new IndividualsTariff(new Service[]{new Service()});
+        this.activationDate= LocalDate.now();
     }
 
-    public IndividualAccount(int id, Person holder, IndividualsTariff tariff) {
+    public IndividualAccount(int id, Person holder, IndividualsTariff tariff,LocalDate activationDate) {
+        if(activationDate.isAfter(LocalDate.now()))
+            throw new IllegalArgumentException();
+        if(holder==null)
+            throw new NullPointerException();
         this.id = id;
         this.holder = holder;
         this.tariff = tariff;
+        this.activationDate=activationDate;
     }
 
     public Person getHolder() {
@@ -22,6 +32,8 @@ public class IndividualAccount extends AbstractAccount{
     }
 
     public void setHolder(Person holder) {
+        if(holder==null)
+            throw new NullPointerException();
         this.holder = holder;
     }
 

@@ -12,6 +12,8 @@ public class EntityTariff implements Tariff {
 
     public EntityTariff(Service[] services)
     {
+        if(services==null)
+            throw new NullPointerException();
         head=tail=new Node();
         head.service=services[0];
         for(int i=1;i<services.length;i++)
@@ -24,6 +26,8 @@ public class EntityTariff implements Tariff {
 
     @Override
     public boolean add(Service service) {
+        if(service==null)
+            throw new NullPointerException();
         if(head!=null){
             tail.next=new Node(tail);
             tail=tail.next;
@@ -37,6 +41,10 @@ public class EntityTariff implements Tariff {
 
     @Override
     public boolean add(Service service, int pos) {
+        if(service==null)
+            throw new NullPointerException();
+        if(pos<0||pos>=getSize())
+            throw new IndexOutOfBoundsException();
         Node current= head;
         for(int i=0;i<pos;i++)
             current=current.next;
@@ -46,6 +54,8 @@ public class EntityTariff implements Tariff {
 
     @Override
     public Service get(int pos) {
+        if(pos<0||pos>=getSize())
+            throw new IndexOutOfBoundsException();
         Node current= head;
         for(int i=0;i<pos;i++)
             current=current.next;
@@ -54,6 +64,8 @@ public class EntityTariff implements Tariff {
 
     @Override
     public Service get(String name) {
+        if(name==null)
+            throw new NullPointerException();
         Node current= head;
         do {
             if(current.service.getName().equals(name))
@@ -65,11 +77,17 @@ public class EntityTariff implements Tariff {
 
     @Override
     public boolean isIncluded(String name) {
+        if(name==null)
+            throw new NullPointerException();
         return get(name)!=null;
     }
 
     @Override
     public Service set(int pos, Service service) {
+        if(service==null)
+            throw new NullPointerException();
+        if(pos<0||pos>=getSize())
+            throw new IndexOutOfBoundsException();
         Node current= head;
         for(int i=0;i<pos;i++)
             current=current.next;
@@ -80,6 +98,8 @@ public class EntityTariff implements Tariff {
 
     @Override
     public Service delete(int pos) {
+        if(pos<0||pos>=getSize())
+            throw new IndexOutOfBoundsException();
         Node current= head;
         for(int i=0;i<pos;i++)
             current=current.next;
@@ -90,6 +110,8 @@ public class EntityTariff implements Tariff {
 
     @Override
     public Service delete(String name) {
+        if(name==null)
+            throw new NullPointerException();
         Node current= head;
         do {
             if(current.service.getName().equals(name))
@@ -185,6 +207,8 @@ public class EntityTariff implements Tariff {
 
     @Override
     public Service delete(Service service) {
+        if(service==null)
+            throw new NullPointerException();
         int index=firstIndex(service);
         if(index>0)
             return delete(index);
@@ -193,6 +217,8 @@ public class EntityTariff implements Tariff {
 
     @Override
     public int firstIndex(Service service) {
+        if(service==null)
+            throw new NullPointerException();
         Service[] services=getServices();
         for (int i=0;i<getSize();i++)
             if(services[i].equals(service))return i;

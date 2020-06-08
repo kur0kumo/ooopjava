@@ -1,6 +1,7 @@
 package MaxFrolov_RPIS82;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class AccountManager {
     private IndividualAccount[] accounts;
@@ -13,14 +14,22 @@ public class AccountManager {
     }
 
     public AccountManager(IndividualAccount[] accounts) {
+        if(accounts==null)
+            throw new NullPointerException();
         IndividualAccount[] newAccounts = new IndividualAccount[accounts.length];
         System.arraycopy(accounts, 0, newAccounts, 0, accounts.length);
         this.capacity = this.size = accounts.length;
         this.accounts = newAccounts;
     }
 
-    public boolean add(IndividualAccount account){
+    public boolean add(IndividualAccount account) throws DublicateAccountNumberException {
+        if(account==null)
+            throw new NullPointerException();
+        for(int i = 0; i < this.accounts.length; ++i)
+            if(accounts[i].getNumber()==account.getNumber())
+                throw new DublicateAccountNumberException();
         doubleCapacity();
+
         for(int i = 0; i < this.accounts.length; ++i) {
             if (this.accounts[i] == null) {
                 this.accounts[i] = account;
@@ -40,10 +49,15 @@ public class AccountManager {
         }
     }
 
-    public boolean add(IndividualAccount account, int position) {
-        if (position < 0 | position > this.capacity) {
-            return false;
-        } else if (this.accounts[position] == null) {
+    public boolean add(IndividualAccount account, int position) throws DublicateAccountNumberException {
+        if(account==null)
+            throw new NullPointerException();
+        if(position<0||position>=getSize())
+            throw new IndexOutOfBoundsException();
+        for(int i = 0; i < this.accounts.length; ++i)
+            if(accounts[i].getNumber()==account.getNumber())
+                throw new DublicateAccountNumberException();
+        if (this.accounts[position] == null) {
             this.accounts[position] = account;
             ++this.size;
             return true;
@@ -52,17 +66,28 @@ public class AccountManager {
         }
     }
 
-    public Account get(int position) {
+    public Account get(int position)
+    {if(position<0||position>=getSize())
+        throw new IndexOutOfBoundsException();
         return this.accounts[position];
     }
 
-    public Account rewrite(IndividualAccount account, int position) {
+    public Account rewrite(IndividualAccount account, int position) throws DublicateAccountNumberException {
+        if(account==null)
+            throw new NullPointerException();
+        if(position<0||position>=getSize())
+            throw new IndexOutOfBoundsException();
+        for(int i = 0; i < this.accounts.length; ++i)
+            if(accounts[i].getNumber()==account.getNumber())
+                throw new DublicateAccountNumberException();
         IndividualAccount oldAccount = this.accounts[position];
         this.accounts[position] = account;
         return oldAccount;
     }
 
     public IndividualAccount delete(int position) {
+        if(position<0||position>=getSize())
+            throw new IndexOutOfBoundsException();
         IndividualAccount deleted = this.accounts[position];
         System.arraycopy(this.accounts, position + 1, this.accounts, position, this.size - position);
         this.accounts[this.size--] = null;
@@ -88,6 +113,8 @@ public class AccountManager {
     }
 
     public IndividualsTariff changeTariff(int id, IndividualsTariff tariff) {
+        if(tariff==null)
+            throw new NullPointerException();
         for(int i = 0; i < this.accounts.length; ++i) {
             if (((IndividualAccount)this.accounts[i]).getId() == id) {
                 IndividualsTariff oldTariff = ((IndividualAccount)this.accounts[i]).getTariff();
@@ -101,12 +128,24 @@ public class AccountManager {
 
     public Service[] getSeervices(ServiceTypes serviceType)
     {
+        if(serviceType==null)
+            throw new NullPointerException();
         ArrayList<Service> s=new ArrayList<>();
         for (IndividualAccount acc: accounts) {
             for(Service serv:acc.getTariff().getServices())
                 if(serv.getServiceType().equals(serviceType))s.add(serv);
         }
         return (Service[]) s.toArray();
+    }
+
+    public IndividualAccount getAccount(long number)
+    {
+        if(number<1000000000001L||number>999999999999999L)
+            throw new IllegalAccountNumber();
+        for(IndividualAccount account: accounts)
+            if( account.getNumber()==number)
+                return account;
+        throw new NoSuchElementException();
     }
 
     @Override
