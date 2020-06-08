@@ -1,12 +1,12 @@
 package MaxFrolov_RPIS82;
 
-public class EntityAccount implements Account{
-    String number;
+public class EntityAccount extends AbstractAccount implements Account{
+    long number;
     String name;
     EntityTariff tariff;
 
     @Override
-    public String getNumber() {
+    public long getNumber() {
         return number;
     }
 

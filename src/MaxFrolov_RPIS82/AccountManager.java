@@ -1,5 +1,7 @@
 package MaxFrolov_RPIS82;
 
+import java.util.ArrayList;
+
 public class AccountManager {
     private IndividualAccount[] accounts;
     private int capacity;
@@ -50,11 +52,11 @@ public class AccountManager {
         }
     }
 
-    public IndividualAccount get(int position) {
+    public Account get(int position) {
         return this.accounts[position];
     }
 
-    public IndividualAccount rewrite(IndividualAccount account, int position) {
+    public Account rewrite(IndividualAccount account, int position) {
         IndividualAccount oldAccount = this.accounts[position];
         this.accounts[position] = account;
         return oldAccount;
@@ -71,7 +73,7 @@ public class AccountManager {
         return this.size;
     }
 
-    public IndividualAccount[] getAccounts() {
+    public Account[] getAccounts() {
         return this.accounts;
     }
 
@@ -96,4 +98,15 @@ public class AccountManager {
 
         return null;
     }
+
+    public Service[] getSeervices(ServiceTypes serviceType)
+    {
+        ArrayList<Service> s=new ArrayList<>();
+        for (IndividualAccount acc: accounts) {
+            for(Service serv:acc.getTariff().getServices())
+                if(serv.getServiceType().equals(serviceType))s.add(serv);
+        }
+        return (Service[]) s.toArray();
+    }
+
 }

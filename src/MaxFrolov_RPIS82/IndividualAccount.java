@@ -1,6 +1,6 @@
 package MaxFrolov_RPIS82;
 
-public class IndividualAccount {
+public class IndividualAccount extends AbstractAccount{
     private int id;
     private Person holder;
     private IndividualsTariff tariff;

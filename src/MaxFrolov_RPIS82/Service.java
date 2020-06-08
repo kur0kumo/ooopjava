@@ -1,32 +1,32 @@
 package MaxFrolov_RPIS82;
 
-public class Service {
-    private String name;
-    private int cost;
+public final class Service {
+    private final String name;
+    private final int cost;
+    ServiceTypes serviceType;
 
     public Service() {
         this.name = "интернет 100мб\\сек";
         this.cost = 300;
+        serviceType=ServiceTypes.INTERNET;
     }
 
-    public Service(String name, int cost) {
+    public Service(String name, int cost, ServiceTypes serviceType) {
         this.name = name;
         this.cost = cost;
+        this.serviceType=serviceType;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public int getCost() {
         return this.cost;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
+    public ServiceTypes getServiceType() {
+        return serviceType;
     }
 }

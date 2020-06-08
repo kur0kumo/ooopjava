@@ -5,8 +5,6 @@ public class IndividualsTariff {
     private Service[] services;
     private int capacity;
     private int size;
-    private final int DEFAULT_CAPACITY = 8;
-    private final int MAINTENANCE_COST = 50;
 
     public IndividualsTariff() {
         this.services = new Service[8];
@@ -27,9 +25,7 @@ public class IndividualsTariff {
 
     public boolean add(Service service) {
         if (this.size == this.capacity) {
-            Service[] newServices = new Service[this.capacity *= 2];
-            System.arraycopy(this.services, 0, newServices, 0, this.services.length);
-            this.services = newServices;
+            DoubleCapacity();
         }
 
         for (int i = 0; i < this.services.length; ++i) {
@@ -41,6 +37,13 @@ public class IndividualsTariff {
         }
 
         return false;
+    }
+
+    protected void DoubleCapacity()
+    {
+        Service[] newServices = new Service[this.capacity *= 2];
+        System.arraycopy(this.services, 0, newServices, 0, this.services.length);
+        this.services = newServices;
     }
 
     public boolean add(Service service, int position) {
