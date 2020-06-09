@@ -1,5 +1,9 @@
 package MaxFrolov_RPIS82;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public class EntityTariff implements Tariff {
     Node head;
     Node tail;
@@ -152,15 +156,7 @@ public class EntityTariff implements Tariff {
     @Override
     public Service[] getSortedServices() {
         Service[] services=getServices();
-        for(int i=0;i<services.length;i++)
-            for(int j=1;j<services.length-1;j++)
-            {
-                if(services[i].getCost()>services[j].getCost()) {
-                    Service service =services[i];
-                    services[i]=services[j];
-                    services[j]=service;
-                }
-            }
+        Arrays.sort(services);
         return services;
     }
 
@@ -223,5 +219,27 @@ public class EntityTariff implements Tariff {
         for (int i=0;i<getSize();i++)
             if(services[i].equals(service))return i;
         return -1;
+    }
+
+    @Override
+    public Iterator<Service> iterator() {
+        return new ServiceIterator();
+    }
+
+    class ServiceIterator implements  Iterator<Service>{
+        int index=0;
+
+
+        @Override
+        public boolean hasNext() {
+            return index<getSize();
+        }
+
+        @Override
+        public Service next() {
+            if(hasNext())
+                return get(index++);
+            else throw new NoSuchElementException();
+        }
     }
 }

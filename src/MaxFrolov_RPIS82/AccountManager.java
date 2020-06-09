@@ -1,9 +1,10 @@
 package MaxFrolov_RPIS82;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class AccountManager {
+public class AccountManager implements Iterable<IndividualAccount> {
     private IndividualAccount[] accounts;
     private int capacity;
     private int size;
@@ -155,5 +156,27 @@ public class AccountManager {
             str.append(acc.toString());
         }
         return str.toString();
+    }
+
+    @Override
+    public Iterator<IndividualAccount> iterator() {
+        return new ServiceIterator();
+    }
+
+    class ServiceIterator implements Iterator<IndividualAccount> {
+        int index=0;
+
+
+        @Override
+        public boolean hasNext() {
+            return index<getSize();
+        }
+
+        @Override
+        public IndividualAccount next() {
+            if(hasNext())
+                return accounts[index++];
+            else throw new NoSuchElementException();
+        }
     }
 }

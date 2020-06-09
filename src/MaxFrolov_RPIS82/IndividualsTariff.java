@@ -1,5 +1,6 @@
 package MaxFrolov_RPIS82;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class IndividualsTariff implements Tariff {
@@ -170,18 +171,7 @@ public class IndividualsTariff implements Tariff {
     public Service[] getSortedServices() {
         Service[] out = this.getServices();
 
-        for (int k = out.length / 2; k > 0; k /= 2) {
-            for (int i = k; i < out.length; ++i) {
-                Service temp = out[i];
-
-                int j;
-                for (j = i; j >= k && temp.getCost() < out[j - k].getCost(); j -= k) {
-                    out[j] = out[j - k];
-                }
-
-                out[j] = temp;
-            }
-        }
+        Arrays.sort(out);
 
         return out;
     }
@@ -250,6 +240,28 @@ public class IndividualsTariff implements Tariff {
             return res;
         }
         return false;
+    }
+
+    @Override
+    public Iterator<Service> iterator() {
+        return new ServiceIterator();
+    }
+
+    class ServiceIterator implements  Iterator<Service>{
+        int index=0;
+
+
+        @Override
+        public boolean hasNext() {
+            return index<getSize();
+        }
+
+        @Override
+        public Service next() {
+            if(hasNext())
+                return get(index++);
+            else throw new NoSuchElementException();
+        }
     }
 }
 

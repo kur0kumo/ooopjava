@@ -3,7 +3,7 @@ package MaxFrolov_RPIS82;
 import java.time.LocalDate;
 import java.util.Date;
 
-public final class Service {
+public final class Service implements Comparable<Service>{
     private final String name;
     private final int cost;
     ServiceTypes serviceType;
@@ -66,5 +66,11 @@ public final class Service {
 
     public LocalDate getActivationDate() {
         return activationDate;
+    }
+
+    @Override
+    public int compareTo(Service o) {
+        if(getCost()==o.getCost())return 0;
+        return getCost()-o.getCost();
     }
 }
