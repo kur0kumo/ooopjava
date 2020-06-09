@@ -1,6 +1,7 @@
 package MaxFrolov_RPIS82;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -41,6 +42,58 @@ public class EntityTariff implements Tariff {
             head.service=service;
         }
         return false;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        try {
+            delete((Service) o);}
+        catch (Exception e){return false;}
+        return true;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        for (Object service:c) {
+            try {add((Service) service);}
+            catch (Exception e){return false;}
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends Service> c) {
+        for (Object service:c) {
+            try {
+                add((Service) service);}
+            catch (Exception e){return false;}
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        for (Object service:c) {
+            try {
+
+
+                delete((Service) service);}
+            catch (Exception e){return false;}
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+        head=tail=null;
     }
 
     @Override
@@ -241,5 +294,34 @@ public class EntityTariff implements Tariff {
                 return get(index++);
             else throw new NoSuchElementException();
         }
+    }
+
+    @Override
+    public int size() {
+        return getSize();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size==0;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        for(Service service:getServices())
+            if(service.equals(o))return true;
+        return false;
+    }
+
+
+
+    @Override
+    public Object[] toArray() {
+        return getServices();
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return (T[]) getServices();
     }
 }

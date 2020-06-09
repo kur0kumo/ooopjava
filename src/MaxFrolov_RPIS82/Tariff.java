@@ -1,8 +1,9 @@
 package MaxFrolov_RPIS82;
 
+import java.util.Collection;
 import java.util.Iterator;
 
-public interface Tariff extends Iterable<Service> {
+public interface Tariff extends Iterable<Service>, Collection<Service> {
     public boolean add(Service service);
     public boolean add(Service service, int pos);
     public Service get(int pos);

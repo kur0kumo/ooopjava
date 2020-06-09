@@ -49,7 +49,6 @@ public class AccountManager implements Iterable<IndividualAccount> {
             this.accounts = newAccounts;
         }
     }
-
     public boolean add(IndividualAccount account, int position) throws DublicateAccountNumberException {
         if(account==null)
             throw new NullPointerException();

@@ -1,5 +1,6 @@
 package MaxFrolov_RPIS82;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -44,6 +45,58 @@ public class IndividualsTariff implements Tariff {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        try {
+            delete((Service) o);}
+        catch (Exception e){return false;}
+        return true;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        for (Object service:c) {
+            try {add((Service) service);}
+            catch (Exception e){return false;}
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends Service> c) {
+        for (Object service:c) {
+            try {
+                add((Service) service);}
+            catch (Exception e){return false;}
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        for (Object service:c) {
+            try {
+
+
+                delete((Service) service);}
+            catch (Exception e){return false;}
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+        services=new Service[8];
     }
 
     protected void DoubleCapacity()
@@ -243,8 +296,35 @@ public class IndividualsTariff implements Tariff {
     }
 
     @Override
+    public int size() {
+        return getSize();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size==0;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        for(Service service:services)
+            if(service.equals(o))return true;
+        return false;
+    }
+
+    @Override
     public Iterator<Service> iterator() {
         return new ServiceIterator();
+    }
+
+    @Override
+    public Object[] toArray() {
+        return services;
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return (T[]) services;
     }
 
     class ServiceIterator implements  Iterator<Service>{
